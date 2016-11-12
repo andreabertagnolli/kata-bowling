@@ -5,38 +5,47 @@ import java.util.List;
 
 public class Game {
 
-    private List<Integer> rolls = new ArrayList<>();
+    private List<Frame> frames = new ArrayList<>();
+    private int currentFramePointer = 0;
     private int bonus = 0;
 
+    public Game() {
+        for (int i=0; i<9; i++) {
+            this.frames.add(new Frame(false));
+        }
+        this.frames.add(new Frame(true));
+    }
+
     public void roll(int count) {
-        rolls.add(count);
-        if (notTheFirstRoll() && firstRollOfAFrame() && precedentFrameWasASpare() && notABonusRoll()) {
+        Frame currentFrame = frames.get(currentFramePointer);
+        if (currentFrame.isComplete()) {
+            currentFramePointer ++;
+            currentFrame = frames.get(currentFramePointer);
+        }
+
+        currentFrame.roll(count);
+
+        if (precedentFrameWasASpare() && currentFrame.hasJustOneRoll()) {
             bonus += count;
         }
     }
 
     public int score() {
         int score = 0;
-        for (Integer roll : rolls) {
-            score += roll;
+        for (Frame frame : frames) {
+            score += frame.score();
         }
         score += bonus;
         return score;
     }
 
-    private boolean notABonusRoll() {
-        return rolls.size() <= 20;
-    }
-
     private boolean precedentFrameWasASpare() {
-        return rolls.get(rolls.size() - 3) + rolls.get(rolls.size() - 2) == 10;
+        if (currentFramePointer == 0) {
+            return false;
+        }
+        else {
+            return frames.get(currentFramePointer - 1).isSpare();
+        }
     }
 
-    private boolean firstRollOfAFrame() {
-        return rolls.size() % 2 == 1;
-    }
-
-    private boolean notTheFirstRoll() {
-        return rolls.size() > 1;
-    }
 }
