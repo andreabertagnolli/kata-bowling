@@ -16,20 +16,22 @@ public class GameTest {
 
     @Test
     public void twenty_miss_rolls() throws Exception {
-        for (int i = 0; i < 20; i++) {
-            game.roll(0);
-        }
+        rollMultiple(20, 0);
 
         assertEquals(0, game.score());
     }
 
     @Test
     public void twenty_rolls_that_scores_one() throws Exception {
-        for (int i = 0; i < 20; i++) {
-            game.roll(1);
-        }
+        rollMultiple(20, 1);
 
         assertEquals(20, game.score());
+    }
+
+    private void rollMultiple(int times, int roll) {
+        for (int i = 0; i < times; i++) {
+            game.roll(roll);
+        }
     }
 
 }
