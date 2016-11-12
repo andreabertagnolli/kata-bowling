@@ -28,6 +28,13 @@ public class GameTest {
         assertEquals(20, game.score());
     }
 
+    @Test
+    public void ten_spares_of_five_plus_five() throws Exception {
+        rollMultiple(21, 5);
+
+        assertEquals(150, game.score());
+    }
+
     private void rollMultiple(int times, int roll) {
         for (int i = 0; i < times; i++) {
             game.roll(roll);
