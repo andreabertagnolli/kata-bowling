@@ -17,11 +17,7 @@ public class Game {
     }
 
     public void roll(int count) {
-        Frame currentFrame = frames.get(currentFramePointer);
-        if (currentFrame.isComplete()) {
-            currentFramePointer ++;
-            currentFrame = frames.get(currentFramePointer);
-        }
+        Frame currentFrame = getCurrentFrame();
 
         currentFrame.roll(count);
 
@@ -34,6 +30,15 @@ public class Game {
         if (precedentOfPrecedentFrameWasAStrike()) {
             bonus += count;
         }
+    }
+
+    private Frame getCurrentFrame() {
+        Frame currentFrame = frames.get(currentFramePointer);
+        if (currentFrame.isComplete()) {
+            currentFramePointer ++;
+            currentFrame = frames.get(currentFramePointer);
+        }
+        return currentFrame;
     }
 
     public int score() {
