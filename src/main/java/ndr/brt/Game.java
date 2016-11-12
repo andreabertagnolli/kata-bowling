@@ -2,11 +2,13 @@ package ndr.brt;
 
 public class Game {
 
-    public void roll(int count) {
+    private int score;
 
+    public void roll(int count) {
+        score += count;
     }
 
     public int score() {
-        return 0;
+        return score;
     }
 }
