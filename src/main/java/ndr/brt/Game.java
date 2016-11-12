@@ -28,6 +28,12 @@ public class Game {
         if (precedentFrameWasASpare() && currentFrame.hasJustOneRoll()) {
             bonus += count;
         }
+        if (precedentFrameWasAStrike() && !currentFrame.isLast()) {
+            bonus += count;
+        }
+        if (precedentOfPrecedentFrameWasAStrike()) {
+            bonus += count;
+        }
     }
 
     public int score() {
@@ -39,13 +45,16 @@ public class Game {
         return score;
     }
 
+    private boolean precedentOfPrecedentFrameWasAStrike() {
+        return currentFramePointer > 1 && frames.get(currentFramePointer - 2).isStrike();
+    }
+
+    private boolean precedentFrameWasAStrike() {
+        return currentFramePointer > 0 && frames.get(currentFramePointer - 1).isStrike();
+    }
+
     private boolean precedentFrameWasASpare() {
-        if (currentFramePointer == 0) {
-            return false;
-        }
-        else {
-            return frames.get(currentFramePointer - 1).isSpare();
-        }
+        return currentFramePointer > 0 && frames.get(currentFramePointer - 1).isSpare();
     }
 
 }

@@ -12,7 +12,7 @@ public class Frame {
     }
 
     public boolean isComplete() {
-        return rolls.size() == 2 && !isLastFrame;
+        return !isLastFrame && (isStrike() || rolls.size() == 2);
     }
 
     public void roll(int count) {
@@ -27,11 +27,19 @@ public class Frame {
         return score() == 10 && rolls.size() == 2;
     }
 
+    public boolean isStrike() {
+        return score() == 10 && rolls.size() == 1;
+    }
+
     public int score() {
         int score = 0;
         for (int i = 0; i < rolls.size(); i++) {
             score += rolls.get(i);
         }
         return score;
+    }
+
+    public boolean isLast() {
+        return isLastFrame;
     }
 }

@@ -35,6 +35,13 @@ public class GameTest {
         assertEquals(150, game.score());
     }
 
+    @Test
+    public void ten_strikes() throws Exception {
+        rollMultiple(12, 10);
+
+        assertEquals(300, game.score());
+    }
+
     private void rollMultiple(int times, int roll) {
         for (int i = 0; i < times; i++) {
             game.roll(roll);
