@@ -6,9 +6,14 @@ import java.util.List;
 public class Frame {
     private List<Integer> rolls = new ArrayList<>();
     private boolean isLastFrame;
+    private int bonus = 0;
 
     public Frame(boolean isLastFrame) {
         this.isLastFrame = isLastFrame;
+    }
+
+    public int score() {
+        return rollsScore() + bonus;
     }
 
     public boolean isComplete() {
@@ -24,22 +29,26 @@ public class Frame {
     }
 
     public boolean isSpare() {
-        return score() == 10 && rolls.size() == 2;
+        return rollsScore() == 10 && rolls.size() == 2;
     }
 
     public boolean isStrike() {
-        return score() == 10 && rolls.size() == 1;
-    }
-
-    public int score() {
-        int score = 0;
-        for (int i = 0; i < rolls.size(); i++) {
-            score += rolls.get(i);
-        }
-        return score;
+        return rollsScore() == 10 && rolls.size() == 1;
     }
 
     public boolean isLast() {
         return isLastFrame;
+    }
+
+    public void addBonus(int count) {
+        bonus += count;
+    }
+
+    private int rollsScore() {
+        int score = 0;
+        for (Integer roll : rolls) {
+            score += roll;
+        }
+        return score;
     }
 }

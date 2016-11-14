@@ -7,7 +7,6 @@ public class Game {
 
     private List<Frame> frames = new ArrayList<>();
     private int currentFramePointer = 0;
-    private int bonus = 0;
 
     public Game() {
         for (int i=0; i<9; i++) {
@@ -22,14 +21,22 @@ public class Game {
         currentFrame.roll(count);
 
         if (precedentFrameWasASpare() && currentFrame.hasJustOneRoll()) {
-            bonus += count;
+            precedentFrame().addBonus(count);
         }
         if (precedentFrameWasAStrike() && !currentFrame.isLast()) {
-            bonus += count;
+            precedentFrame().addBonus(count);
         }
         if (precedentOfPrecedentFrameWasAStrike()) {
-            bonus += count;
+            precedentOfPrecedentFrame().addBonus(count);
         }
+    }
+
+    public int score() {
+        int score = 0;
+        for (Frame frame : frames) {
+            score += frame.score();
+        }
+        return score;
     }
 
     private Frame getCurrentFrame() {
@@ -41,25 +48,24 @@ public class Game {
         return currentFrame;
     }
 
-    public int score() {
-        int score = 0;
-        for (Frame frame : frames) {
-            score += frame.score();
-        }
-        score += bonus;
-        return score;
-    }
-
     private boolean precedentOfPrecedentFrameWasAStrike() {
-        return currentFramePointer > 1 && frames.get(currentFramePointer - 2).isStrike();
+        return currentFramePointer > 1 && precedentOfPrecedentFrame().isStrike();
     }
 
     private boolean precedentFrameWasAStrike() {
-        return currentFramePointer > 0 && frames.get(currentFramePointer - 1).isStrike();
+        return currentFramePointer > 0 && precedentFrame().isStrike();
     }
 
     private boolean precedentFrameWasASpare() {
-        return currentFramePointer > 0 && frames.get(currentFramePointer - 1).isSpare();
+        return currentFramePointer > 0 && precedentFrame().isSpare();
+    }
+
+    private Frame precedentOfPrecedentFrame() {
+        return frames.get(currentFramePointer - 2);
+    }
+
+    private Frame precedentFrame() {
+        return frames.get(currentFramePointer - 1);
     }
 
 }
