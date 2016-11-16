@@ -7,6 +7,7 @@ public class EventStore {
 
     private static EventStore instance;
     private List<Event> events = new ArrayList<>();
+    private Publisher publisher = new Publisher();
 
     public static EventStore getInstance() {
         if (instance == null) {
@@ -15,8 +16,9 @@ public class EventStore {
         return instance;
     }
 
-    public void store(Event event) {
-        events.add(event);
+    public void store(List<Event> event) {
+        events.addAll(event);
+        event.forEach(e -> publisher.publish(e));
     }
 
     public List<Event> getAll() {

@@ -6,7 +6,7 @@ import java.util.List;
 public class GameEntity {
 
     private List<Frame> frames = new ArrayList<>();
-    private Publisher publisher = new Publisher();
+    private List<Event> uncommittedEvents = new ArrayList<>();
 
     public GameEntity() {
         frames.add(new Frame(false));
@@ -15,17 +15,15 @@ public class GameEntity {
     public void roll(int pins) {
         KnockedDownEvent event = new KnockedDownEvent(pins);
 
-        EventStore.getInstance().store(event);
+        uncommittedEvents.add(event);
         apply(event);
-        publisher.publish(event);
     }
 
     public void bonus(int pins) {
         BonusEarnedEvent event = new BonusEarnedEvent(pins);
 
-        EventStore.getInstance().store(event);
+        uncommittedEvents.add(event);
         apply(event);
-        publisher.publish(event);
     }
 
     public void apply(Event event) {
@@ -86,5 +84,9 @@ public class GameEntity {
 
     private int currentFramePointer() {
         return frames.size()-1;
+    }
+
+    public List<Event> uncommittedEvents() {
+        return uncommittedEvents;
     }
 }

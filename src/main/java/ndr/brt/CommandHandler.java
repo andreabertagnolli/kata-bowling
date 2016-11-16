@@ -3,7 +3,8 @@ package ndr.brt;
 public class CommandHandler {
 
     public void handle(RollCommand command) {
-        GameEntity game = GameRepository.getInstance().get();
+        GameRepository repository = GameRepository.getInstance();
+        GameEntity game = repository.get();
 
         int pins = command.getPins();
         game.roll(pins);
@@ -17,6 +18,8 @@ public class CommandHandler {
         if (game.shouldGiveStrikeSecondBonus()) {
             game.bonus(pins);
         }
+
+        repository.save(game);
     }
 
 }

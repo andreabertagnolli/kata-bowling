@@ -24,4 +24,8 @@ public class GameRepository {
     public void clear() {
         instance = null;
     }
+
+    public void save(GameEntity game) {
+        EventStore.getInstance().store(game.uncommittedEvents());
+    }
 }
