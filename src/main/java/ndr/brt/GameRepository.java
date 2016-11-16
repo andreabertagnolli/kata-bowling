@@ -13,9 +13,9 @@ public class GameRepository {
     }
 
     public GameEntity get() {
-        List<KnockedDownEvent> events = EventStore.getInstance().getAll();
+        List<Event> events = EventStore.getInstance().getAll();
         GameEntity game = new GameEntity();
-        for (KnockedDownEvent event : events) {
+        for (Event event : events) {
             game.apply(event);
         }
         return game;

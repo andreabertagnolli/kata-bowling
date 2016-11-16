@@ -1,6 +1,6 @@
 package ndr.brt;
 
-public class KnockedDownEvent {
+public class KnockedDownEvent extends Event {
     private int pins;
 
     public KnockedDownEvent(int pins) {

@@ -2,14 +2,21 @@ package ndr.brt;
 
 public class CommandHandler {
 
-    private ScoreRepository scoreRepository = ScoreRepository.getInstance();
-
     public void handle(RollCommand command) {
         GameEntity game = GameRepository.getInstance().get();
 
-        game.roll(command.getPins());
+        int pins = command.getPins();
+        game.roll(pins);
 
-        scoreRepository.setScore(game.score());
+        if (game.shouldGiveSpareBonus()) {
+            game.bonus(pins);
+        }
+        if (game.shouldGiveStrikeBonus()) {
+            game.bonus(pins);
+        }
+        if (game.shouldGiveStrikeSecondBonus()) {
+            game.bonus(pins);
+        }
     }
 
 }

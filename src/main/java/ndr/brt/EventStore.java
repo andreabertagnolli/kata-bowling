@@ -6,7 +6,7 @@ import java.util.List;
 public class EventStore {
 
     private static EventStore instance;
-    private List<KnockedDownEvent> events = new ArrayList<>();
+    private List<Event> events = new ArrayList<>();
 
     public static EventStore getInstance() {
         if (instance == null) {
@@ -15,11 +15,11 @@ public class EventStore {
         return instance;
     }
 
-    public void store(KnockedDownEvent knockedDownEvent) {
-        events.add(knockedDownEvent);
+    public void store(Event event) {
+        events.add(event);
     }
 
-    public List<KnockedDownEvent> getAll() {
+    public List<Event> getAll() {
         return events;
     }
 

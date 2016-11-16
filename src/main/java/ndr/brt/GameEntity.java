@@ -6,6 +6,7 @@ import java.util.List;
 public class GameEntity {
 
     private List<Frame> frames = new ArrayList<>();
+    private Publisher publisher = new Publisher();
 
     public GameEntity() {
         frames.add(new Frame(false));
@@ -15,40 +16,51 @@ public class GameEntity {
         KnockedDownEvent event = new KnockedDownEvent(pins);
 
         EventStore.getInstance().store(event);
-
         apply(event);
+        publisher.publish(event);
     }
 
-    public void apply(KnockedDownEvent event) {
-        int pins = event.getPins();
+    public void bonus(int pins) {
+        BonusEarnedEvent event = new BonusEarnedEvent(pins);
 
-        if (currentFrame().isComplete()) {
-            Frame newFrame = new Frame(frames.size() == 9);
-            frames.add(newFrame);
-        }
+        EventStore.getInstance().store(event);
+        apply(event);
+        publisher.publish(event);
+    }
 
-        currentFrame().roll(pins);
+    public void apply(Event event) {
+        if (event instanceof KnockedDownEvent) {
+            KnockedDownEvent knockedDown = (KnockedDownEvent)event;
+            int pins = knockedDown.getPins();
 
-        if (precedentFrameWasASpare() && currentFrame().hasJustOneRoll()) {
-            precedentFrame().addBonus(pins);
-        }
-        if (precedentFrameWasAStrike() && !currentFrame().isLast()) {
-            precedentFrame().addBonus(pins);
-        }
-        if (precedentOfPrecedentFrameWasAStrike()) {
-            precedentOfPrecedentFrame().addBonus(pins);
+            if (currentFrame().isComplete()) {
+                Frame newFrame = new Frame(frames.size() == 9);
+                frames.add(newFrame);
+            }
+
+            currentFrame().roll(pins);
+
+            if (shouldGiveSpareBonus()) {
+                precedentFrame().addBonus(pins);
+            }
+            if (shouldGiveStrikeBonus()) {
+                precedentFrame().addBonus(pins);
+            }
+            if (shouldGiveStrikeSecondBonus()) {
+                precedentOfPrecedentFrame().addBonus(pins);
+            }
         }
     }
 
-    public int score() {
-        int score = 0;
-        for (Frame frame : frames) {
-            score += frame.score();
-        }
-        return score;
+    public boolean shouldGiveSpareBonus() {
+        return precedentFrameWasASpare() && currentFrame().hasJustOneRoll();
     }
 
-    private boolean precedentOfPrecedentFrameWasAStrike() {
+    boolean shouldGiveStrikeBonus() {
+        return precedentFrameWasAStrike() && !currentFrame().isLast();
+    }
+
+    boolean shouldGiveStrikeSecondBonus() {
         return currentFramePointer() > 1 && precedentOfPrecedentFrame().isStrike();
     }
 
@@ -56,7 +68,7 @@ public class GameEntity {
         return currentFramePointer() > 0 && precedentFrame().isStrike();
     }
 
-    private boolean precedentFrameWasASpare() {
+    boolean precedentFrameWasASpare() {
         return currentFramePointer() > 0 && precedentFrame().isSpare();
     }
 
