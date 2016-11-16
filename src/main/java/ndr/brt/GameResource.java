@@ -1,6 +1,6 @@
 package ndr.brt;
 
-public class Game {
+public class GameResource {
 
     private CommandHandler commandHandler = new CommandHandler();
     private ScoreRepository scoreRepository = ScoreRepository.getInstance();
