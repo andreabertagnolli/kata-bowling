@@ -3,6 +3,8 @@ package ndr.brt;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+
 public class Frame {
     private List<Integer> rolls = new ArrayList<>();
     private boolean isLastFrame;
@@ -50,5 +52,12 @@ public class Frame {
             score += roll;
         }
         return score;
+    }
+
+    @Override
+    public String toString() {
+        return rolls.stream()
+                .map(String::valueOf)
+                .collect(joining(",", "[", "]"));
     }
 }

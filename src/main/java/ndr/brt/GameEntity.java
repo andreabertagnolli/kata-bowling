@@ -6,13 +6,9 @@ import java.util.List;
 public class GameEntity {
 
     private List<Frame> frames = new ArrayList<>();
-    private int currentFramePointer = 0;
 
     public GameEntity() {
-        for (int i=0; i<9; i++) {
-            this.frames.add(new Frame(false));
-        }
-        this.frames.add(new Frame(true));
+        frames.add(new Frame(false));
     }
 
     public void roll(int pins) {
@@ -26,19 +22,17 @@ public class GameEntity {
     public void apply(KnockedDownEvent event) {
         int pins = event.getPins();
 
-        Frame currentFrame = frames.get(currentFramePointer);
-        if (currentFrame.isComplete()) {
-            currentFramePointer ++;
-            currentFrame = frames.get(currentFramePointer);
+        if (currentFrame().isComplete()) {
+            Frame newFrame = new Frame(frames.size() == 9);
+            frames.add(newFrame);
         }
 
-        currentFrame.roll(pins);
+        currentFrame().roll(pins);
 
-
-        if (precedentFrameWasASpare() && currentFrame.hasJustOneRoll()) {
+        if (precedentFrameWasASpare() && currentFrame().hasJustOneRoll()) {
             precedentFrame().addBonus(pins);
         }
-        if (precedentFrameWasAStrike() && !currentFrame.isLast()) {
+        if (precedentFrameWasAStrike() && !currentFrame().isLast()) {
             precedentFrame().addBonus(pins);
         }
         if (precedentOfPrecedentFrameWasAStrike()) {
@@ -55,22 +49,30 @@ public class GameEntity {
     }
 
     private boolean precedentOfPrecedentFrameWasAStrike() {
-        return currentFramePointer > 1 && precedentOfPrecedentFrame().isStrike();
+        return currentFramePointer() > 1 && precedentOfPrecedentFrame().isStrike();
     }
 
     private boolean precedentFrameWasAStrike() {
-        return currentFramePointer > 0 && precedentFrame().isStrike();
+        return currentFramePointer() > 0 && precedentFrame().isStrike();
     }
 
     private boolean precedentFrameWasASpare() {
-        return currentFramePointer > 0 && precedentFrame().isSpare();
+        return currentFramePointer() > 0 && precedentFrame().isSpare();
+    }
+
+    private Frame currentFrame() {
+        return frames.get(currentFramePointer());
     }
 
     private Frame precedentOfPrecedentFrame() {
-        return frames.get(currentFramePointer - 2);
+        return frames.get(currentFramePointer() - 2);
     }
 
     private Frame precedentFrame() {
-        return frames.get(currentFramePointer - 1);
+        return frames.get(currentFramePointer() - 1);
+    }
+
+    private int currentFramePointer() {
+        return frames.size()-1;
     }
 }
