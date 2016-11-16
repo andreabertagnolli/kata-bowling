@@ -26,47 +26,60 @@ public class GameEntity {
         apply(event);
     }
 
-    public void apply(Event event) {
-        if (event instanceof KnockedDownEvent) {
-            KnockedDownEvent knockedDown = (KnockedDownEvent)event;
-            int pins = knockedDown.getPins();
-
-            if (currentFrame().isComplete()) {
-                Frame newFrame = new Frame(frames.size() == 9);
-                frames.add(newFrame);
-            }
-
-            currentFrame().roll(pins);
-
-            if (shouldGiveSpareBonus()) {
-                precedentFrame().addBonus(pins);
-            }
-            if (shouldGiveStrikeBonus()) {
-                precedentFrame().addBonus(pins);
-            }
-            if (shouldGiveStrikeSecondBonus()) {
-                precedentOfPrecedentFrame().addBonus(pins);
-            }
-        }
+    public List<Event> uncommittedEvents() {
+        return uncommittedEvents;
     }
 
     public boolean shouldGiveSpareBonus() {
         return precedentFrameWasASpare() && currentFrame().hasJustOneRoll();
     }
 
-    boolean shouldGiveStrikeBonus() {
+    public boolean shouldGiveStrikeBonus() {
         return precedentFrameWasAStrike() && !currentFrame().isLast();
     }
 
-    boolean shouldGiveStrikeSecondBonus() {
+    public boolean shouldGiveStrikeSecondBonus() {
         return currentFramePointer() > 1 && precedentOfPrecedentFrame().isStrike();
+    }
+
+    public void apply(Event event) {
+        if (event instanceof KnockedDownEvent) {
+            apply((KnockedDownEvent) event);
+        }
+        if (event instanceof BonusEarnedEvent) {
+            apply((BonusEarnedEvent) event);
+        }
+    }
+
+    private void apply(KnockedDownEvent event) {
+        int pins = event.getPins();
+
+        if (currentFrame().isComplete()) {
+            Frame newFrame = new Frame(frames.size() == 9);
+            frames.add(newFrame);
+        }
+
+        currentFrame().roll(pins);
+    }
+
+    private void apply(BonusEarnedEvent event) {
+        int bonus = event.getBonus();
+        if (shouldGiveSpareBonus()) {
+            precedentFrame().addBonus(bonus);
+        }
+        if (shouldGiveStrikeBonus()) {
+            precedentFrame().addBonus(bonus);
+        }
+        if (shouldGiveStrikeSecondBonus()) {
+            precedentOfPrecedentFrame().addBonus(bonus);
+        }
     }
 
     private boolean precedentFrameWasAStrike() {
         return currentFramePointer() > 0 && precedentFrame().isStrike();
     }
 
-    boolean precedentFrameWasASpare() {
+    private boolean precedentFrameWasASpare() {
         return currentFramePointer() > 0 && precedentFrame().isSpare();
     }
 
@@ -84,9 +97,5 @@ public class GameEntity {
 
     private int currentFramePointer() {
         return frames.size()-1;
-    }
-
-    public List<Event> uncommittedEvents() {
-        return uncommittedEvents;
     }
 }
