@@ -1,9 +1,8 @@
 package ndr.brt;
 
-import java.util.List;
-
 public class GameRepository {
     private static GameRepository instance;
+    private EventStore eventStore;
 
     public static GameRepository getInstance() {
         if (instance == null) {
@@ -12,12 +11,13 @@ public class GameRepository {
         return instance;
     }
 
+    private GameRepository() {
+        eventStore = new EventStore();
+    }
+
     public GameEntity get() {
-        List<Event> events = EventStore.getInstance().getAll();
         GameEntity game = new GameEntity();
-        for (Event event : events) {
-            game.apply(event);
-        }
+        eventStore.getAll().forEach(game::apply);
         return game;
     }
 
@@ -26,6 +26,6 @@ public class GameRepository {
     }
 
     public void save(GameEntity game) {
-        EventStore.getInstance().store(game.uncommittedEvents());
+        eventStore.store(game.uncommittedEvents());
     }
 }
