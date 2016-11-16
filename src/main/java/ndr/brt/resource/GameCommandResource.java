@@ -1,4 +1,7 @@
-package ndr.brt;
+package ndr.brt.resource;
+
+import ndr.brt.CommandHandler;
+import ndr.brt.RollCommand;
 
 public class GameCommandResource {
 

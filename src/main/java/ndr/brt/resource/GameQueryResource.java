@@ -1,4 +1,6 @@
-package ndr.brt;
+package ndr.brt.resource;
+
+import ndr.brt.ScoreRepository;
 
 public class GameQueryResource {
 

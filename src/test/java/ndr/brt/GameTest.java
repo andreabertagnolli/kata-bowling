@@ -1,5 +1,7 @@
 package ndr.brt;
 
+import ndr.brt.resource.GameCommandResource;
+import ndr.brt.resource.GameQueryResource;
 import org.junit.Before;
 import org.junit.Test;
 
