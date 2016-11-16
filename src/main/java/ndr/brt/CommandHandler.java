@@ -2,8 +2,13 @@ package ndr.brt;
 
 public class CommandHandler {
 
+    private GameRepository repository;
+
+    public CommandHandler() {
+        repository = new GameRepository();
+    }
+
     public void handle(RollCommand command) {
-        GameRepository repository = GameRepository.getInstance();
         GameEntity game = repository.get();
 
         int pins = command.getPins();

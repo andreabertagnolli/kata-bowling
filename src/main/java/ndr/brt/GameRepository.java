@@ -1,17 +1,10 @@
 package ndr.brt;
 
 public class GameRepository {
-    private static GameRepository instance;
+
     private EventStore eventStore;
 
-    public static GameRepository getInstance() {
-        if (instance == null) {
-            instance = new GameRepository();
-        }
-        return instance;
-    }
-
-    private GameRepository() {
+    public GameRepository() {
         eventStore = new EventStore();
     }
 
@@ -19,10 +12,6 @@ public class GameRepository {
         GameEntity game = new GameEntity();
         eventStore.getAll().forEach(game::apply);
         return game;
-    }
-
-    public void clear() {
-        instance = null;
     }
 
     public void save(GameEntity game) {
