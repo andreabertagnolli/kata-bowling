@@ -19,4 +19,8 @@ public class ScoreRepository {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public void clear() {
+        score = 0;
+    }
 }

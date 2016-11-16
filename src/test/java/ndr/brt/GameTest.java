@@ -12,6 +12,9 @@ public class GameTest {
     @Before
     public void setUp() throws Exception {
         gameResource = new GameResource();
+        EventStore.getInstance().clear();
+        ScoreRepository.getInstance().clear();
+        GameRepository.getInstance().clear();
     }
 
     @Test

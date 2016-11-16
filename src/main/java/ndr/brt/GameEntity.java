@@ -16,9 +16,24 @@ public class GameEntity {
     }
 
     public void roll(int pins) {
-        Frame currentFrame = getCurrentFrame();
+        KnockedDownEvent event = new KnockedDownEvent(pins);
+
+        EventStore.getInstance().store(event);
+
+        apply(event);
+    }
+
+    public void apply(KnockedDownEvent event) {
+        int pins = event.getPins();
+
+        Frame currentFrame = frames.get(currentFramePointer);
+        if (currentFrame.isComplete()) {
+            currentFramePointer ++;
+            currentFrame = frames.get(currentFramePointer);
+        }
 
         currentFrame.roll(pins);
+
 
         if (precedentFrameWasASpare() && currentFrame.hasJustOneRoll()) {
             precedentFrame().addBonus(pins);
@@ -37,15 +52,6 @@ public class GameEntity {
             score += frame.score();
         }
         return score;
-    }
-
-    private Frame getCurrentFrame() {
-        Frame currentFrame = frames.get(currentFramePointer);
-        if (currentFrame.isComplete()) {
-            currentFramePointer ++;
-            currentFrame = frames.get(currentFramePointer);
-        }
-        return currentFrame;
     }
 
     private boolean precedentOfPrecedentFrameWasAStrike() {
@@ -67,5 +73,4 @@ public class GameEntity {
     private Frame precedentFrame() {
         return frames.get(currentFramePointer - 1);
     }
-
 }
