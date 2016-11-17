@@ -1,4 +1,4 @@
-package ndr.brt.resource;
+package ndr.brt;
 
 public class CreateNewGameCommand {
     private final int id;

@@ -1,6 +1,7 @@
 package ndr.brt.resource;
 
 import ndr.brt.CommandHandler;
+import ndr.brt.CreateNewGameCommand;
 import ndr.brt.RollCommand;
 
 public class GameCommandResource {

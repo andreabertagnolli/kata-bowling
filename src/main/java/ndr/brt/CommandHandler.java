@@ -1,7 +1,5 @@
 package ndr.brt;
 
-import ndr.brt.resource.CreateNewGameCommand;
-
 public class CommandHandler {
 
     private GameRepository repository;
