@@ -1,8 +1,8 @@
 package ndr.brt.resource;
 
 import ndr.brt.CommandHandler;
-import ndr.brt.CreateNewGameCommand;
-import ndr.brt.RollCommand;
+import ndr.brt.command.CreateNewGame;
+import ndr.brt.command.Roll;
 
 public class GameCommandResource {
 
@@ -13,7 +13,7 @@ public class GameCommandResource {
     }
 
     public int newGame(int id) {
-        CreateNewGameCommand command = new CreateNewGameCommand(id);
+        CreateNewGame command = new CreateNewGame(id);
 
         commandHandler.handle(command);
 
@@ -21,7 +21,7 @@ public class GameCommandResource {
     }
 
     public void roll(int count, int gameId) {
-        RollCommand command = new RollCommand(count, gameId);
+        Roll command = new Roll(count, gameId);
 
         commandHandler.handle(command);
     }

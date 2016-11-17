@@ -1,10 +1,10 @@
-package ndr.brt;
+package ndr.brt.command;
 
-public class RollCommand {
+public class Roll {
     private int pins;
     private final int id;
 
-    public RollCommand(int pins, int id) {
+    public Roll(int pins, int id) {
         this.pins = pins;
         this.id = id;
     }

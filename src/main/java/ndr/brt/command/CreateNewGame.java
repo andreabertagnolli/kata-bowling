@@ -1,9 +1,9 @@
-package ndr.brt;
+package ndr.brt.command;
 
-public class CreateNewGameCommand {
+public class CreateNewGame {
     private final int id;
 
-    public CreateNewGameCommand(int id) {
+    public CreateNewGame(int id) {
         this.id = id;
     }
 
