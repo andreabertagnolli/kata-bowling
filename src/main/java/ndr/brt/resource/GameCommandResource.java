@@ -1,7 +1,7 @@
 package ndr.brt.resource;
 
 import ndr.brt.CommandHandler;
-import ndr.brt.command.CreateNewGame;
+import ndr.brt.command.NewGame;
 import ndr.brt.command.Roll;
 
 public class GameCommandResource {
@@ -13,7 +13,7 @@ public class GameCommandResource {
     }
 
     public int newGame(int id) {
-        CreateNewGame command = new CreateNewGame(id);
+        NewGame command = new NewGame(id);
 
         commandHandler.handle(command);
 
