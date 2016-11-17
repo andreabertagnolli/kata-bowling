@@ -1,9 +1,10 @@
-package ndr.brt;
+package ndr.brt.event;
 
-public class KnockedDownEvent extends Event {
+public class KnockedDown extends Event {
+
     private int pins;
 
-    public KnockedDownEvent(int pins, int id) {
+    public KnockedDown(int id, int pins) {
         super(id);
         this.pins = pins;
     }

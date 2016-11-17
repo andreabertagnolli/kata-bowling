@@ -1,5 +1,10 @@
 package ndr.brt;
 
+import ndr.brt.event.BonusEarned;
+import ndr.brt.event.Event;
+import ndr.brt.event.GameCreated;
+import ndr.brt.event.KnockedDown;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,21 +15,21 @@ public class GameEntity {
     private List<Event> uncommittedEvents = new ArrayList<>();
 
     public void create(int id) {
-        GameCreatedEvent event = new GameCreatedEvent(id);
+        GameCreated event = new GameCreated(id);
 
         uncommittedEvents.add(event);
         apply(event);
     }
 
     public void roll(int pins, int id) {
-        KnockedDownEvent event = new KnockedDownEvent(pins, id);
+        KnockedDown event = new KnockedDown(id, pins);
 
         uncommittedEvents.add(event);
         apply(event);
     }
 
     public void bonus(int pins, int id) {
-        BonusEarnedEvent event = new BonusEarnedEvent(pins, id);
+        BonusEarned event = new BonusEarned(id, pins);
 
         uncommittedEvents.add(event);
         apply(event);
@@ -47,23 +52,23 @@ public class GameEntity {
     }
 
     public void apply(Event event) {
-        if (event instanceof GameCreatedEvent) {
-            apply((GameCreatedEvent) event);
+        if (event instanceof GameCreated) {
+            apply((GameCreated) event);
         }
-        if (event instanceof KnockedDownEvent) {
-            apply((KnockedDownEvent) event);
+        if (event instanceof KnockedDown) {
+            apply((KnockedDown) event);
         }
-        if (event instanceof BonusEarnedEvent) {
-            apply((BonusEarnedEvent) event);
+        if (event instanceof BonusEarned) {
+            apply((BonusEarned) event);
         }
     }
 
-    private void apply(GameCreatedEvent event) {
+    private void apply(GameCreated event) {
         setId(event.getId());
         frames.add(new Frame(false));
     }
 
-    private void apply(KnockedDownEvent event) {
+    private void apply(KnockedDown event) {
         int pins = event.getPins();
 
         if (currentFrame().isComplete()) {
@@ -74,7 +79,7 @@ public class GameEntity {
         currentFrame().roll(pins);
     }
 
-    private void apply(BonusEarnedEvent event) {
+    private void apply(BonusEarned event) {
         int bonus = event.getBonus();
         if (shouldGiveSpareBonus()) {
             precedentFrame().addBonus(bonus);

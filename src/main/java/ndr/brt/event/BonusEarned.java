@@ -1,9 +1,9 @@
-package ndr.brt;
+package ndr.brt.event;
 
-public class BonusEarnedEvent extends Event {
+public class BonusEarned extends Event {
     private final int bonus;
 
-    public BonusEarnedEvent(int bonus, int id) {
+    public BonusEarned(int id, int bonus) {
         super(id);
         this.bonus = bonus;
     }

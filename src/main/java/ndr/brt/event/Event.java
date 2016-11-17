@@ -1,10 +1,10 @@
-package ndr.brt;
+package ndr.brt.event;
 
 public class Event {
 
     private final int id;
 
-    public Event(int id) {
+    protected Event(int id) {
         this.id = id;
     }
 
