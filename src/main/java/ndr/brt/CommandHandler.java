@@ -1,11 +1,21 @@
 package ndr.brt;
 
+import ndr.brt.resource.CreateNewGameCommand;
+
 public class CommandHandler {
 
     private GameRepository repository;
 
     public CommandHandler() {
         repository = new GameRepository();
+    }
+
+    public void handle(CreateNewGameCommand command) {
+        GameEntity game = new GameEntity();
+
+        game.create(command.getId());
+
+        repository.save(game);
     }
 
     public void handle(RollCommand command) {
@@ -26,5 +36,4 @@ public class CommandHandler {
 
         repository.save(game);
     }
-
 }

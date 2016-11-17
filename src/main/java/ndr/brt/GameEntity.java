@@ -5,11 +5,15 @@ import java.util.List;
 
 public class GameEntity {
 
+    private int id;
     private List<Frame> frames = new ArrayList<>();
     private List<Event> uncommittedEvents = new ArrayList<>();
 
-    public GameEntity() {
-        frames.add(new Frame(false));
+    public void create(int id) {
+        GameCreatedEvent event = new GameCreatedEvent(id);
+
+        uncommittedEvents.add(event);
+        apply(event);
     }
 
     public void roll(int pins) {
@@ -43,12 +47,20 @@ public class GameEntity {
     }
 
     public void apply(Event event) {
+        if (event instanceof GameCreatedEvent) {
+            apply((GameCreatedEvent) event);
+        }
         if (event instanceof KnockedDownEvent) {
             apply((KnockedDownEvent) event);
         }
         if (event instanceof BonusEarnedEvent) {
             apply((BonusEarnedEvent) event);
         }
+    }
+
+    private void apply(GameCreatedEvent event) {
+        setId(event.getId());
+        frames.add(new Frame(false));
     }
 
     private void apply(KnockedDownEvent event) {
@@ -97,5 +109,9 @@ public class GameEntity {
 
     private int currentFramePointer() {
         return frames.size()-1;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -5,17 +5,23 @@ import ndr.brt.resource.GameQueryResource;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.assertEquals;
 
 public class GameTest {
 
     private GameQueryResource gameQueryResource;
     private GameCommandResource gameCommandResource;
+    private static Random idGenerator = new Random();
+    private int gameId;
 
     @Before
     public void setUp() throws Exception {
         gameQueryResource = new GameQueryResource();
         gameCommandResource = new GameCommandResource();
+
+        gameId = gameCommandResource.newGame(idGenerator.nextInt());
         ScoreRepository.getInstance().clear();
     }
 

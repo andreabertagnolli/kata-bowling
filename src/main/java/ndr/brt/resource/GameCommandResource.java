@@ -11,6 +11,14 @@ public class GameCommandResource {
         this.commandHandler = new CommandHandler();
     }
 
+    public int newGame(int id) {
+        CreateNewGameCommand command = new CreateNewGameCommand(id);
+
+        commandHandler.handle(command);
+
+        return id;
+    }
+
     public void roll(int count) {
         RollCommand command = new RollCommand(count);
 

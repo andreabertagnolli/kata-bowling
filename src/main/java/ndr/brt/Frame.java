@@ -14,10 +14,6 @@ public class Frame {
         this.isLastFrame = isLastFrame;
     }
 
-    public int score() {
-        return rollsScore() + bonus;
-    }
-
     public boolean isComplete() {
         return !isLastFrame && (isStrike() || rolls.size() == 2);
     }
@@ -31,11 +27,11 @@ public class Frame {
     }
 
     public boolean isSpare() {
-        return rollsScore() == 10 && rolls.size() == 2;
+        return score() == 10 && rolls.size() == 2;
     }
 
     public boolean isStrike() {
-        return rollsScore() == 10 && rolls.size() == 1;
+        return score() == 10 && rolls.size() == 1;
     }
 
     public boolean isLast() {
@@ -46,7 +42,7 @@ public class Frame {
         bonus += count;
     }
 
-    private int rollsScore() {
+    private int score() {
         int score = 0;
         for (Integer roll : rolls) {
             score += roll;
