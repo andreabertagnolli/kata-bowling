@@ -11,15 +11,22 @@ public class Publisher {
         if (event instanceof BonusEarnedEvent) {
             publish((BonusEarnedEvent) event);
         }
+        if (event instanceof GameCreatedEvent) {
+            publish((GameCreatedEvent) event);
+        }
     }
 
     public void publish(KnockedDownEvent event) {
-        int actualScore = scoreRepository.getScore();
-        scoreRepository.setScore(actualScore + event.getPins());
+        int actualScore = scoreRepository.getScore(event.getId());
+        scoreRepository.setScore(actualScore + event.getPins(), event.getId());
     }
 
     public void publish(BonusEarnedEvent event) {
-        int actualScore = scoreRepository.getScore();
-        scoreRepository.setScore(actualScore + event.getBonus());
+        int actualScore = scoreRepository.getScore(event.getId());
+        scoreRepository.setScore(actualScore + event.getBonus(), event.getId());
+    }
+
+    public void publish(GameCreatedEvent event) {
+        scoreRepository.setScore(0, event.getId());
     }
 }

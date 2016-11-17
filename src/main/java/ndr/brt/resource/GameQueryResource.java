@@ -6,8 +6,8 @@ public class GameQueryResource {
 
     private ScoreRepository scoreRepository = ScoreRepository.getInstance();
 
-    public int score() {
-        return scoreRepository.getScore();
+    public int score(int gameId) {
+        return scoreRepository.getScore(gameId);
     }
 
 }
