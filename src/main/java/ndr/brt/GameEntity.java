@@ -16,15 +16,15 @@ public class GameEntity {
         apply(event);
     }
 
-    public void roll(int pins) {
-        KnockedDownEvent event = new KnockedDownEvent(pins);
+    public void roll(int pins, int id) {
+        KnockedDownEvent event = new KnockedDownEvent(pins, id);
 
         uncommittedEvents.add(event);
         apply(event);
     }
 
-    public void bonus(int pins) {
-        BonusEarnedEvent event = new BonusEarnedEvent(pins);
+    public void bonus(int pins, int id) {
+        BonusEarnedEvent event = new BonusEarnedEvent(pins, id);
 
         uncommittedEvents.add(event);
         apply(event);

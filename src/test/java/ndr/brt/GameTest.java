@@ -55,7 +55,7 @@ public class GameTest {
 
     private void rollMultiple(int times, int roll) {
         for (int i = 0; i < times; i++) {
-            gameCommandResource.roll(roll);
+            gameCommandResource.roll(roll, gameId);
         }
     }
 

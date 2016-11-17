@@ -19,8 +19,8 @@ public class GameCommandResource {
         return id;
     }
 
-    public void roll(int count) {
-        RollCommand command = new RollCommand(count);
+    public void roll(int count, int gameId) {
+        RollCommand command = new RollCommand(count, gameId);
 
         commandHandler.handle(command);
     }

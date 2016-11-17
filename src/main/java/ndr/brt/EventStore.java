@@ -3,6 +3,8 @@ package ndr.brt;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class EventStore {
 
     private List<Event> events = new ArrayList<>();
@@ -13,7 +15,9 @@ public class EventStore {
         event.forEach(e -> publisher.publish(e));
     }
 
-    public List<Event> getAll() {
-        return events;
+    public List<Event> getById(int id) {
+        return events.stream()
+                .filter(e -> id == e.getId())
+                .collect(toList());
     }
 }

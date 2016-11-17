@@ -8,6 +8,7 @@ import static java.util.stream.Collectors.joining;
 public class Frame {
     private List<Integer> rolls = new ArrayList<>();
     private boolean isLastFrame;
+    private int bonus = 0;
 
     public Frame(boolean isLastFrame) {
         this.isLastFrame = isLastFrame;

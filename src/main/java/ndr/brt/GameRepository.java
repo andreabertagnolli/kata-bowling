@@ -8,9 +8,9 @@ public class GameRepository {
         eventStore = new EventStore();
     }
 
-    public GameEntity get() {
+    public GameEntity get(int id) {
         GameEntity game = new GameEntity();
-        eventStore.getAll().forEach(game::apply);
+        eventStore.getById(id).forEach(game::apply);
         return game;
     }
 

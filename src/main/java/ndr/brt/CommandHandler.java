@@ -19,19 +19,20 @@ public class CommandHandler {
     }
 
     public void handle(RollCommand command) {
-        GameEntity game = repository.get();
+        int id = command.getId();
+        GameEntity game = repository.get(id);
 
         int pins = command.getPins();
-        game.roll(pins);
+        game.roll(pins, id);
 
         if (game.shouldGiveSpareBonus()) {
-            game.bonus(pins);
+            game.bonus(pins, id);
         }
         if (game.shouldGiveStrikeBonus()) {
-            game.bonus(pins);
+            game.bonus(pins, id);
         }
         if (game.shouldGiveStrikeSecondBonus()) {
-            game.bonus(pins);
+            game.bonus(pins, id);
         }
 
         repository.save(game);
